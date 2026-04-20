@@ -1,4 +1,5 @@
 -- Basic Employee Queries
+-- This file contains basic SQL queries including select, where, group by, order by, concat, and union.
 
 -- Fetch EMP_ID, FIRST_NAME, LAST_NAME, GENDER, and DEPARTMENT
 SELECT
