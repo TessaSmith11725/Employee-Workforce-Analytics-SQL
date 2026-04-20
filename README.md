@@ -14,6 +14,26 @@ The goal is to generate insights that help HR make informed decisions during the
 
 ---
 
+## Business Impact
+
+This analysis helps HR teams:
+- Improve employee performance evaluations  
+- Identify employees who may need training or role adjustments  
+- Better understand compensation and bonus costs  
+- Support data-driven decision-making during appraisal cycles
+
+---
+
+## Key Insights
+
+- Bonus calculations show that high-performing employees significantly impact compensation costs, highlighting the importance of performance-based budgeting  
+
+- Department-level performance comparisons reveal variation in top ratings, suggesting differences in team performance or evaluation standards  
+
+- Reporting structure analysis identifies managers with large numbers of direct reports, which may impact team efficiency and oversight  
+
+---
+
 ## Tools Used
 
 - SQL (MySQL)
@@ -31,54 +51,13 @@ The dataset includes:
 ## ER Diagram
 
 ![ER Diagram](./assets/2_ER_diagram.png)  
+
 ---
-
-## Key Analyses
-
-### Employee Performance Analysis
-- Segmented employees based on performance ratings  
-- Identified high and low performers  
-
-### Department-Level Insights
-- Compared employee ratings within departments  
-- Calculated maximum ratings per department  
-
-### Reporting Structure
-- Identified managers with direct reports  
-- Counted number of employees per manager  
-
-### Salary & Bonus Analysis
-- Calculated employee bonuses using:
-```sql
-(salary * 0.05) * emp_rating
-```
-- Analyzed salary distribution across regions
-
-### Experience-Based Ranking
-- Ranked employees based on experience
-
-### Role Validation
-- Created a stored function to validate role alignment with experience
-```sql
-IF(role = GetStandardProfile(EXP), 'MATCH', 'MISMATCH')
-```
-
-## Key Insight
-
-A custom SQL function was used to compare assigned roles with expected roles based on experience. This helps identify employees who may need training or role adjustments.
-
-## SQL Skills Demonstrated
-- Joins & subqueries
-- Aggregate functions
-- Window functions
-- Views & indexing
-- Stored functions
-- Data validation logic
 
 ## Sample Outputs
 
+This query compares each employee’s rating to the highest rating within their department, helping identify top performers and performance gaps.
 ```sql
--- Display each employee's details with the maximum EMP_RATING in their department
 SELECT
     emp_id,
     first_name,
@@ -94,8 +73,8 @@ FROM emp_records;
 
 ---
 
+This query shows how bonuses are calculated based on ratings and salaries
 ```sql
--- Calculate bonus for all employees based on ratings and salaries
 -- Formula: 5% of salary * employee rating
 SELECT
     emp_id,
@@ -109,48 +88,3 @@ FROM emp_records;
 ![Employee_bonuses](./assets/15_bonus.png)  
 
 ---
-
-```sql
--- 13. Create a stored function to validate whether assigned job profiles
--- match the organization's standard based on experience.
-
-DELIMITER //
-
-CREATE FUNCTION GetStandardProfile(exp INT)
-RETURNS VARCHAR(50)
-DETERMINISTIC
-BEGIN
-    DECLARE standard_role VARCHAR(50);
-
-    CASE
-        WHEN exp <= 2 THEN
-            SET standard_role = 'JUNIOR DATA SCIENTIST';
-        WHEN exp > 2 AND exp <= 5 THEN
-            SET standard_role = 'ASSOCIATE DATA SCIENTIST';
-        WHEN exp > 5 AND exp <= 10 THEN
-            SET standard_role = 'SENIOR DATA SCIENTIST';
-        WHEN exp > 10 AND exp <= 12 THEN
-            SET standard_role = 'LEAD DATA SCIENTIST';
-        ELSE
-            SET standard_role = 'MANAGER';
-    END CASE;
-
-    RETURN standard_role;
-END //
-
-DELIMITER ;
-
-SELECT
-    emp_id,
-    first_name,
-    last_name,
-    role AS assigned_role,
-    exp,
-    GetStandardProfile(exp) AS standard_role,
-    IF(role = GetStandardProfile(exp), 'MATCH', 'MISMATCH') AS status_check
-FROM data_science_team;
-```
-![Employee_validation](./assets/13_delimiter.png)  
-
-Other relevant files and assets are included in the repository.  
-Feel free to explore the different analyses and insights extracted from the provided data.
