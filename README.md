@@ -26,11 +26,13 @@ This analysis enables HR teams to:
 
 ## Key Insights
 
-- Departments show variation in maximum performance ratings, suggesting differences in performance standards or team effectiveness  
+- Departments show variation in maximum performance ratings, indicating differences in performance standards or team effectiveness  
 
 - Bonus calculations highlight that high-performing employees significantly increase compensation costs  
 
-- Managers with a high number of direct reports may face challenges in oversight and team performance  
+- Managers with a high number of direct reports may face challenges in oversight and team performance
+
+- All employees’ roles align with expected experience levels, indicating consistent role assignment and promotion standards  
 
 ---
 
@@ -60,6 +62,8 @@ The diagram below illustrates the structure and relationships between the core t
 
 ## Sample Outputs
 
+The following queries highlight key analyses performed on the dataset and their results.
+
 ### Max Employee Rating by Department
 
 Compares each employee’s rating to the highest rating within their department, helping identify top performers and performance gaps.
@@ -73,16 +77,20 @@ SELECT
     dept,
     emp_rating,
     MAX(emp_rating) OVER (
-		PARTITION BY dept) AS max_dept_rating
+    	PARTITION BY dept
+	) AS max_dept_rating
 FROM emp_records;
 ```
+
 ![Employee_details](./assets/8_emp_rating.png)  
 
 ---
 
-### Business Logic and Stored Functions
+### Role Validation
 
 Creates a stored function to validate whether assigned job profiles match the organization's standard based on experience.
+
+The results confirm that all employees’ roles align with expected experience levels, confirming consistency in role assignment across the data science team.
 
 ```sql
 DELIMITER //
@@ -121,5 +129,14 @@ SELECT
     IF(role = GetStandardProfile(exp), 'MATCH', 'MISMATCH') AS status_check
 FROM data_science_team;
 ```
+
 ![Employee_Validation](./assets/13_delimiter.png)
+
 ---
+
+## Recommendations
+
+- Continue maintaining role assignment standards based on experience levels  
+- Monitor departments with lower performance benchmarks to identify improvement opportunities  
+- Evaluate management structures where spans of control are large  
+- Plan for increased bonus-related expenses tied to high-performing employees  
