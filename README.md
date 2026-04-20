@@ -32,5 +32,4 @@ Views & indexing
 Stored procedures/functions
 Data validation logic
 🧱 ER Diagram
-
-(Insert image here once you create it)
+assets/2_ER_diagram.png
