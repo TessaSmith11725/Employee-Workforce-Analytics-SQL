@@ -1,6 +1,4 @@
 -- Employee Database Setup
--- Based on Lesson 18 project submission
-
 CREATE DATABASE employee;
 USE employee;
 
